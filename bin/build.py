@@ -10,7 +10,7 @@ import pytz
 from colorthief import ColorThief
 from PIL import Image
 
-BASE = 'https://stodevx.github.io/sga-weekly-movies'
+BASE = 'https://carls-app.github.io/weekly-movies'
 
 
 def dedupe(lst, key=lambda x: x['width']):
