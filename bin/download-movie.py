@@ -8,7 +8,7 @@ from lib import get_movie
 def main():
     parser = argparse.ArgumentParser(description='Download movie info.')
     parser.add_argument('date', metavar='SHOW_DATE',
-                        help='the first date shown at Olaf, in YYYY-MM-DD')
+                        help='the first date shown, in YYYY-MM-DD')
     parser.add_argument('title', metavar='TITLE',
                         help='the movie title to fetch')
     parser.add_argument('--year', default=None, help='the year the movie was released')

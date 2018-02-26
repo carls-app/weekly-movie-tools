@@ -17,7 +17,7 @@ def get_movie(imdb_id):
     return r.json()
 
 
-def search_for_movie(title: str, year: int):
+def search_for_movie(title: str, year: int, autopick=False):
     params = {'s': title, 'apiKey': OMDB_API_KEY, 'type': 'movie'}
     if year:
         params['y'] = year
@@ -36,6 +36,8 @@ def search_for_movie(title: str, year: int):
             return None
 
         chosen_index = options.index(chosen_title)
+    elif autopick:
+        chosen_index = 0
     else:
         options = [f'{m["Title"]} ({m["Year"]})' for m in results['Search']]
         [chosen_title, chosen_index] = pick(options)
