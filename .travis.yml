@@ -33,10 +33,15 @@ jobs:
 
     - stage: build
       script: pipenv run ../bin/build.py
-      after_success: rm -rf .* bin/ LICENSE CODE_OF_CONDUCT.md README.md Pipfile*
-      deploy:
-        provider: pages
-        skip_cleanup: true
-        github_token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard
-        on:
-          branch: master
+      after_success:
+        - |
+          if [[ $TRAVIS_BRANCH = master ]]; then
+            cd ..
+            rm -rf .* bin/ LICENSE CODE_OF_CONDUCT.md README.md Pipfile*
+            # prepare the gh-pages branch
+            git checkout -B gh-pages master --no-track
+            # and … push
+            git add --all ./
+            git commit -m "rendered weekly movie info" --quiet
+            git push -f "https://$GITHUB_TOKEN@github.com/carls-app/weekly-movie.git" gh-pages
+          fi
