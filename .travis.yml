@@ -1,0 +1,42 @@
+os: linux
+sudo: required
+dist: trusty
+language: python
+python: 3.6
+
+install:
+  - pip3 install pipenv
+  - pipenv install
+
+before_script:
+  # prepare the repositories
+  - git clone --depth=1 https://github.com/carls-app/weekly-movie weekly-movie
+  - cd weekly-movie
+  # set up git to commit
+  - git config user.name "SUMO Databot"
+  - git config user.email "hawkrives+carls-sumo-databot@gmail.com"
+
+stages:
+  - {name: fetch, if: type = cron}
+  - {name: build}
+
+jobs:
+  include:
+    - stage: fetch
+      script:
+        # fetch the next movie
+        - pipenv ../bin/download-feed.py
+        # commit
+        - git add .
+        - git commit -m "sumo movie update $(date)" || (echo "No updates found." && exit 0)
+        - git push "https://$GITHUB_TOKEN@github.com/carls-app/weekly-movie.git" master
+
+    - stage: build
+      script: pipenv run ../bin/build.py
+      after_success: rm -rf .* bin/ LICENSE CODE_OF_CONDUCT.md README.md Pipfile*
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard
+        on:
+          branch: master
