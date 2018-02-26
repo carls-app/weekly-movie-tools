@@ -36,8 +36,6 @@ jobs:
       after_success:
         - |
           if [[ $TRAVIS_BRANCH = master ]]; then
-            cd ..
-            rm -rf bin/ LICENSE CODE_OF_CONDUCT.md README.md Pipfile*
             # prepare the gh-pages branch
             git checkout -B gh-pages master --no-track
             # and … push
