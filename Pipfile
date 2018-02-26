@@ -12,6 +12,8 @@ pillow = "*"
 colorthief = "*"
 requests = "*"
 pick = "*"
+feedparser = "*"
+arrow = "*"
 
 
 [requires]
