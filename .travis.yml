@@ -25,7 +25,7 @@ jobs:
     - stage: fetch
       script:
         # fetch the next movie
-        - pipenv ../bin/download-feed.py
+        - pipenv run ../bin/download-feed.py
         # commit
         - git add .
         - git commit -m "sumo movie update $(date)" || (echo "No updates found." && exit 0)
